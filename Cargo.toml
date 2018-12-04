@@ -1,0 +1,6 @@
+[package]
+name = "advent_of_rust"
+version = "0.1.0"
+authors = ["Benjamin Garfield <ben@clypd.com>"]
+
+[dependencies]
