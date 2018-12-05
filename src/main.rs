@@ -10,11 +10,7 @@ struct Solution {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    println!("{:?}", args);
-
     let filename = &args[1];
-
-    println!("Using file: {}", filename);
 
     let mut seen_v: HashMap<isize, bool> = HashMap::new();
     let mut first_repeat = Solution {
