@@ -1,6 +1,9 @@
+use std::collections::HashMap;
 use std::error;
 use std::fmt;
 use std::str::FromStr;
+
+static ONE: isize = 1;
 
 struct Claim {
     claim_id: isize,
@@ -52,4 +55,35 @@ impl FromStr for Claim {
         };
         return Ok(c);
     }
+}
+
+pub fn part_one(file_contents: &String) -> () {
+    let mut hm: HashMap<(isize, isize), isize> = HashMap::new();
+
+    file_contents
+        .clone()
+        .as_mut_str()
+        .split("\n")
+        .for_each(|claim| {
+            let c: Claim = claim.parse().unwrap();
+
+            for x in 0..c.x_size {
+                let x_coord = x + c.x_offset;
+                for y in 0..c.y_size {
+                    let y_coord = y + c.y_offset;
+
+                    let v = hm.entry((x_coord, y_coord)).or_insert(0);
+                    *v += 1;
+                }
+            }
+        });
+
+    let mut sq_in: isize = 0;
+    for v in hm.values() {
+        if v > &ONE {
+            sq_in += 1;
+        }
+    }
+
+    println!("total sq_in that have overlapping claims: {}", sq_in)
 }
