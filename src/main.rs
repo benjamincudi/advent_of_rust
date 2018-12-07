@@ -1,55 +1,30 @@
-use std::collections::HashMap;
+mod one;
 use std::env;
 use std::fs;
-use std::str;
-
-struct Solution {
-    value: isize,
-    is_valid: bool,
-}
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let filename = &args[1];
-
-    let mut seen_v: HashMap<isize, bool> = HashMap::new();
-    let mut first_repeat = Solution {
-        value: 0,
-        is_valid: false,
-    };
-
-    let mut init: isize = 0;
-
-    loop {
-        init = fs::read_to_string(filename)
-            .expect("something went horribly wrong")
-            .as_mut_str()
-            .split_whitespace()
-            .fold(init, |acc, next_val| {
-                let res = input_iter(acc, next_val);
-
-                if seen_v.get(&res).is_some() && !first_repeat.is_valid == true {
-                    first_repeat = Solution {
-                        value: res,
-                        is_valid: true,
-                    };
-                } else {
-                    seen_v.insert(res, true);
-                }
-
-                return res;
-            });
-
-        if first_repeat.is_valid {
-            break;
-        }
+    if args.len() < 3 {
+        println!("usage is `advent_of_rust <day> <part> <filepath>");
+        return;
     }
 
-    println!("solution is: {}", first_repeat.value);
-}
+    let day: i8 = args[1].parse().unwrap();
 
-fn input_iter(acc: isize, next_val: &str) -> isize {
-    let nv: isize = next_val.to_string().parse().unwrap();
+    let part: i8 = args[2]
+        .parse()
+        .expect("part must be a parseable number; valid values are only 1 and 2");
 
-    return acc + nv;
+    let filename = &args[3];
+    let file_contents = fs::read_to_string(filename)
+        .expect("reading the file went horribly wrong, are you sure it exists?");
+
+    match day {
+        1 => match part {
+            1 => one::part_one(&file_contents),
+            2 => one::part_two(&file_contents),
+            _ => println!("unknown part"),
+        },
+        _ => println!("unknown day"),
+    }
 }
