@@ -1,4 +1,5 @@
 mod one;
+mod two;
 use std::env;
 use std::fs;
 
@@ -23,6 +24,10 @@ fn main() {
         1 => match part {
             1 => one::part_one(&file_contents),
             2 => one::part_two(&file_contents),
+            _ => println!("unknown part"),
+        },
+        2 => match part {
+            1 => two::part_one(&file_contents),
             _ => println!("unknown part"),
         },
         _ => println!("unknown day"),
