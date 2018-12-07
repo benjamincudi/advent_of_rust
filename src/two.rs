@@ -29,3 +29,39 @@ pub fn part_one(file_contents: &String) -> () {
 
     println!("answer: {}", twice * thrice)
 }
+
+pub fn part_two(file_contents: &String) -> () {
+    let mut hm: HashMap<String, bool> = HashMap::new();
+
+    let mut solution: String = "".to_string();
+
+    file_contents
+        .clone()
+        .as_mut_str()
+        .split_whitespace()
+        .for_each(|s| {
+            let mut i = 0;
+            let len_s = s.len();
+
+            while i < len_s {
+                let first = if i == 0 { "" } else { s.get(0..i).unwrap() };
+                let second = if i == len_s - 1 {
+                    ""
+                } else {
+                    s.get((i + 1)..).unwrap()
+                };
+
+                let key = first.to_owned() + "_" + second;
+
+                if hm.get(&key).is_some() {
+                    solution = key;
+                } else {
+                    hm.insert(key, true);
+                }
+
+                i += 1;
+            }
+        });
+
+    println!("answer: {}", solution)
+}

@@ -28,6 +28,7 @@ fn main() {
         },
         2 => match part {
             1 => two::part_one(&file_contents),
+            2 => two::part_two(&file_contents),
             _ => println!("unknown part"),
         },
         _ => println!("unknown day"),
