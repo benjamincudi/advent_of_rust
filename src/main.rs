@@ -34,6 +34,7 @@ fn main() {
         },
         3 => match part {
             1 => three::part_one(&file_contents),
+            2 => three::part_two(&file_contents),
             _ => println!("unknown part"),
         },
         _ => println!("unknown day"),

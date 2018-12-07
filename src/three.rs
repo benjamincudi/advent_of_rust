@@ -87,3 +87,44 @@ pub fn part_one(file_contents: &String) -> () {
 
     println!("total sq_in that have overlapping claims: {}", sq_in)
 }
+
+pub fn part_two(file_contents: &String) -> () {
+    let mut hm: HashMap<(isize, isize), isize> = HashMap::new();
+    let mut claims: HashMap<isize, bool> = HashMap::new();
+
+    file_contents
+        .clone()
+        .as_mut_str()
+        .split("\n")
+        .for_each(|claim| {
+            let c: Claim = claim.parse().unwrap();
+            claims.insert(c.claim_id, true);
+
+            for x in 0..c.x_size {
+                let x_coord = x + c.x_offset;
+                for y in 0..c.y_size {
+                    let y_coord = y + c.y_offset;
+                    let v = hm.entry((x_coord, y_coord)).or_insert(c.claim_id);
+                    if v != &c.claim_id {
+                        claims.insert(*v, false);
+                        claims.insert(c.claim_id, false);
+                    }
+                }
+            }
+        });
+
+    let valid_claim_ids: Vec<isize> = claims
+        .into_iter()
+        .filter(|(_, no_overlap)| *no_overlap)
+        .map(|(claim_id, _)| claim_id)
+        .collect();
+
+    if valid_claim_ids.is_empty() {
+        println!("no answers found");
+    } else {
+        println!("found {} answer(s)", valid_claim_ids.len());
+        for c_id in valid_claim_ids.iter() {
+            println!("answer: {}", c_id);
+        }
+    }
+}
