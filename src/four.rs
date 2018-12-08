@@ -208,10 +208,20 @@ pub fn part_one(file_contents: &String) -> () {
             .unwrap_or((-1, -1));
         guard_to_minute.insert(guard_id, (max_minute, total_count));
     }
-    guard_to_minute
-        .clone()
+    // guard_to_minute
+    //     .clone()
+    //     .into_iter()
+    //     .for_each(|(g_id, (m, c))| {
+    //         println!("guard {} had max minute {} with count {}", g_id, m, c)
+    //     });
+    let (g_id, (minute, _)) = guard_to_minute
         .into_iter()
-        .for_each(|(g_id, (m, c))| {
-            println!("guard {} had max minute {} with count {}", g_id, m, c)
-        });
+        .max_by(|(_, (_, count_a)), (_, (_, count_b))| count_a.cmp(count_b))
+        .unwrap();
+    println!(
+        "max is guard {} at minute {}, for solution {}",
+        g_id,
+        minute,
+        (g_id * minute)
+    );
 }
