@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use std::error;
 use std::fmt;
 use std::str::FromStr;
+use std::usize;
 
 struct RawPoint {
     x_offset: usize,
@@ -91,6 +92,39 @@ pub fn part_one(file_contents: &String) -> () {
             point_id_to_area.insert(count, 0);
             return p;
         }).collect();
+
+    for x in 0..x_max {
+        for y in 0..y_max {
+            let current_point = RawPoint {
+                x_offset: x,
+                y_offset: y,
+            };
+
+            let mut min_distance: usize = usize::MAX;
+            let mut count_of_min: usize = 0;
+            let mut min_id: usize = 0;
+            input_points.clone().into_iter().for_each(|p| {
+                let distance = p.taxicab_to(&current_point);
+                match distance.cmp(&min_distance) {
+                    Ordering::Less => {
+                        min_distance = distance;
+                        count_of_min = 1;
+                        min_id = p.id;
+                    }
+                    Ordering::Equal => {
+                        count_of_min += 1;
+                        min_id = 0;
+                    }
+                    _ => (),
+                }
+            });
+
+            if count_of_min == 1 {
+                let a = point_id_to_area.entry(min_id).or_insert(0);
+                *a += 1;
+            }
+        }
+    }
 
     println!("found {} points", input_points.len());
 }
