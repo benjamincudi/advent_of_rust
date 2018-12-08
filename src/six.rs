@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 use std::error;
 use std::fmt;
 use std::str::FromStr;
@@ -5,6 +6,20 @@ use std::str::FromStr;
 struct Point {
     x_offset: usize,
     y_offset: usize,
+}
+
+impl Point {
+    fn taxicab_to(&self, p: Point) -> usize {
+        let x_diff = match self.x_offset.cmp(&p.x_offset) {
+            Ordering::Less => p.x_offset - self.x_offset,
+            _ => self.x_offset - p.x_offset,
+        };
+        let y_diff = match self.y_offset.cmp(&p.y_offset) {
+            Ordering::Less => p.y_offset - self.y_offset,
+            _ => self.y_offset - p.y_offset,
+        };
+        return x_diff + y_diff;
+    }
 }
 
 #[derive(Debug)]
