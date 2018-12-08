@@ -185,7 +185,33 @@ pub fn part_one(file_contents: &String) -> () {
             }
         }).collect();
 
+    let guard_ids: Vec<isize> = guard_to_minute
+        .clone()
+        .into_iter()
+        .map(|(k, _)| k)
+        .collect();
+    for guard_id in guard_ids.into_iter() {
+        let mut minute_count: HashMap<isize, isize> = HashMap::new();
+        let gsm = guard_sleeping_minutes.clone();
+        let mut total_count: isize = 0;
+        gsm.into_iter()
+            .filter(|(g_id, _)| guard_id == *g_id)
+            .for_each(|(_, m)| {
+                let c = minute_count.entry(m).or_insert(0);
+                *c += 1;
+                total_count += 1;
+            });
+
+        let (max_minute, _) = minute_count
+            .into_iter()
+            .max_by(|(_, c_a), (_, c_b)| c_a.cmp(c_b))
+            .unwrap_or((-1, -1));
+        guard_to_minute.insert(guard_id, (max_minute, total_count));
+    }
     guard_to_minute
-        .keys()
-        .for_each(|k| println!("guard found with id {}", k));
+        .clone()
+        .into_iter()
+        .for_each(|(g_id, (m, c))| {
+            println!("guard {} had max minute {} with count {}", g_id, m, c)
+        });
 }
