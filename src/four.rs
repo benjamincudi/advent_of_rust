@@ -95,7 +95,15 @@ impl FromStr for RawLog {
         } else if data[2].starts_with("falls asleep") {
             LogActivity::FallAsleep
         } else {
-            let guard_number: i16 = data[2].split("#").nth(1).unwrap_or("-1").parse().unwrap();
+            let guard_number: i16 = data[2]
+                .split("#")
+                .nth(1)
+                .unwrap()
+                .split(" ")
+                .nth(0)
+                .unwrap()
+                .parse()
+                .unwrap();
             LogActivity::StartDuty(guard_number)
         };
 
