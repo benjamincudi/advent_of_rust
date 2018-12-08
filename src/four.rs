@@ -6,7 +6,7 @@ use std::str::FromStr;
 
 #[derive(Eq)]
 enum LogActivity {
-    StartDuty(i16),
+    StartDuty(isize),
     FallAsleep,
     WakeUp,
 }
@@ -20,7 +20,7 @@ impl fmt::Display for LogActivity {
     }
 }
 
-fn get_guard_number(l: &LogActivity) -> Option<i16> {
+fn get_guard_number(l: &LogActivity) -> Option<isize> {
     match l {
         LogActivity::StartDuty(n) => Some(*n),
         _ => None,
@@ -59,7 +59,7 @@ struct RawLog {
     month: i8,
     day: i8,
     hour: i8,
-    minute: i8,
+    minute: isize,
     event: LogActivity,
 }
 
@@ -115,7 +115,7 @@ impl FromStr for RawLog {
         } else if data[2].starts_with("falls asleep") {
             LogActivity::FallAsleep
         } else {
-            let guard_number: i16 = data[2]
+            let guard_number: isize = data[2]
                 .split("#")
                 .nth(1)
                 .unwrap()
@@ -140,7 +140,7 @@ impl FromStr for RawLog {
 }
 
 pub fn part_one(file_contents: &String) -> () {
-    let mut guard_to_minute: HashMap<i16, i16> = HashMap::new();
+    let mut guard_to_minute: HashMap<isize, (isize, isize)> = HashMap::new();
     let mut logs = file_contents
         .clone()
         .as_mut_str()
@@ -149,7 +149,7 @@ pub fn part_one(file_contents: &String) -> () {
             let l = RawLog::from_str(log).unwrap();
             match l.event {
                 LogActivity::StartDuty(n) => {
-                    guard_to_minute.entry(n).or_insert(-1);
+                    guard_to_minute.entry(n).or_insert((-1, -1));
                 }
                 _ => (),
             };
