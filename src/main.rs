@@ -38,6 +38,10 @@ fn main() {
             2 => three::part_two(&file_contents),
             _ => println!("unknown part"),
         },
+        4 => match part {
+            1 => four::part_one(&file_contents),
+            _ => println!("unknown part"),
+        },
         _ => println!("unknown day"),
     }
 }

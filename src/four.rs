@@ -137,3 +137,16 @@ impl FromStr for RawLog {
         return Ok(c);
     }
 }
+
+pub fn part_one(file_contents: &String) -> () {
+    let mut logs = file_contents
+        .clone()
+        .as_mut_str()
+        .split("\n")
+        .map(|log| RawLog::from_str(log).unwrap())
+        .collect::<Vec<RawLog>>();
+
+    logs.sort_unstable();
+
+    logs.into_iter().for_each(|log| println!("{}", log));
+}
