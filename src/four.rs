@@ -42,6 +42,7 @@ impl error::Error for LogParseError {
     }
 }
 
+#[derive(Eq, PartialEq)]
 struct RawLog {
     year: i16,
     month: i8,
