@@ -1,3 +1,4 @@
+mod four;
 mod one;
 mod three;
 mod two;
@@ -35,6 +36,11 @@ fn main() {
         3 => match part {
             1 => three::part_one(&file_contents),
             2 => three::part_two(&file_contents),
+            _ => println!("unknown part"),
+        },
+        4 => match part {
+            1 => four::part_one(&file_contents),
+            2 => four::part_two(&file_contents),
             _ => println!("unknown part"),
         },
         _ => println!("unknown day"),
