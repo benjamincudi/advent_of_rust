@@ -17,7 +17,7 @@ struct Point {
 }
 
 impl Point {
-    fn taxicab_to(&self, p: Point) -> usize {
+    fn taxicab_to(&self, p: &RawPoint) -> usize {
         let x_diff = match self.x_offset.cmp(&p.x_offset) {
             Ordering::Less => p.x_offset - self.x_offset,
             _ => self.x_offset - p.x_offset,
