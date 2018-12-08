@@ -8,6 +8,13 @@ enum LogActivity {
     WakeUp,
 }
 
+fn get_guard_number(l: LogActivity) -> Option<i16> {
+    match l {
+        LogActivity::StartDuty(n) => Some(n),
+        _ => None,
+    }
+}
+
 struct RawLog {
     year: i16,
     month: i8,
