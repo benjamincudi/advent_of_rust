@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 use std::error;
 use std::fmt;
 use std::str::FromStr;
@@ -52,6 +53,36 @@ struct RawLog {
     event: LogActivity,
 }
 
+impl Ord for RawLog {
+    fn cmp(&self, other: &RawLog) -> Ordering {
+        match self.year.cmp(&other.year) {
+            Ordering::Equal => (),
+            x => return x,
+        }
+
+        match self.month.cmp(&other.month) {
+            Ordering::Equal => (),
+            x => return x,
+        }
+
+        match self.day.cmp(&other.day) {
+            Ordering::Equal => (),
+            x => return x,
+        }
+
+        match self.hour.cmp(&other.hour) {
+            Ordering::Equal => (),
+            x => return x,
+        }
+
+        return self.minute.cmp(&other.minute);
+    }
+}
+impl PartialOrd for RawLog {
+    fn partial_cmp(&self, other: &RawLog) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
 impl FromStr for RawLog {
     type Err = LogParseError;
 
