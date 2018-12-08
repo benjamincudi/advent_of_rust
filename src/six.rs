@@ -9,6 +9,7 @@ struct RawPoint {
     y_offset: usize,
 }
 
+#[derive(Clone)]
 struct Point {
     x_offset: usize,
     y_offset: usize,
