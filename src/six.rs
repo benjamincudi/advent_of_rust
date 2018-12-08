@@ -1,4 +1,5 @@
 use std::cmp::Ordering;
+use std::collections::HashMap;
 use std::error;
 use std::fmt;
 use std::str::FromStr;
@@ -63,6 +64,9 @@ pub fn part_one(file_contents: &String) -> () {
     let mut x_max: usize = 0;
     let mut y_max: usize = 0;
     let mut count: usize = 0;
+
+    let mut point_id_to_area: HashMap<usize, usize> = HashMap::new();
+
     let input_points: Vec<Point> = file_contents
         .clone()
         .as_mut_str()
@@ -83,6 +87,7 @@ pub fn part_one(file_contents: &String) -> () {
                 Ordering::Less => p.y_offset,
                 _ => y_max,
             };
+            point_id_to_area.insert(count, 0);
             return p;
         }).collect();
 
