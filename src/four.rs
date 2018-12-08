@@ -9,6 +9,15 @@ enum LogActivity {
     FallAsleep,
     WakeUp,
 }
+impl fmt::Display for LogActivity {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            LogActivity::StartDuty(_n) => write!(f, "StartDuty"),
+            LogActivity::FallAsleep => write!(f, "FallAsleep"),
+            LogActivity::WakeUp => write!(f, "WakeUp"),
+        }
+    }
+}
 
 fn get_guard_number(l: &LogActivity) -> Option<i16> {
     match l {
@@ -83,6 +92,16 @@ impl PartialOrd for RawLog {
         Some(self.cmp(other))
     }
 }
+impl fmt::Display for RawLog {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "{}-{}-{} at {}:{} - {}",
+            self.year, self.month, self.day, self.hour, self.minute, self.event
+        )
+    }
+}
+
 impl FromStr for RawLog {
     type Err = LogParseError;
 
