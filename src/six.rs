@@ -93,6 +93,8 @@ pub fn part_one(file_contents: &String) -> () {
             return p;
         }).collect();
 
+    let mut border_points: HashMap<usize, bool> = HashMap::new();
+
     for x in 0..x_max {
         for y in 0..y_max {
             let current_point = RawPoint {
@@ -122,6 +124,10 @@ pub fn part_one(file_contents: &String) -> () {
             if count_of_min == 1 {
                 let a = point_id_to_area.entry(min_id).or_insert(0);
                 *a += 1;
+            }
+
+            if x == 0 || x == x_max || y == 0 || y == y_max {
+                border_points.insert(min_id, true);
             }
         }
     }
