@@ -2,26 +2,26 @@ use std::error;
 use std::fmt;
 use std::str::FromStr;
 
+#[derive(Eq)]
 enum LogActivity {
     StartDuty(i16),
     FallAsleep,
     WakeUp,
 }
 
-fn get_guard_number(l: LogActivity) -> Option<i16> {
+fn get_guard_number(l: &LogActivity) -> Option<i16> {
     match l {
-        LogActivity::StartDuty(n) => Some(n),
+        LogActivity::StartDuty(n) => Some(*n),
         _ => None,
     }
 }
-
-struct RawLog {
-    year: i16,
-    month: i8,
-    day: i8,
-    hour: i8,
-    minute: i8,
-    event: LogActivity,
+impl PartialEq for LogActivity {
+    fn eq(&self, other: &LogActivity) -> bool {
+        match self {
+            LogActivity::StartDuty(_n) => get_guard_number(self) == get_guard_number(other),
+            _ => self == other,
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -40,6 +40,15 @@ impl error::Error for LogParseError {
         // Generic error, underlying cause isn't tracked.
         None
     }
+}
+
+struct RawLog {
+    year: i16,
+    month: i8,
+    day: i8,
+    hour: i8,
+    minute: i8,
+    event: LogActivity,
 }
 
 impl FromStr for RawLog {
