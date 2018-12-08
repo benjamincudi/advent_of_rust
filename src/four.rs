@@ -1,4 +1,5 @@
 use std::cmp::Ordering;
+use std::collections::HashMap;
 use std::error;
 use std::fmt;
 use std::str::FromStr;
@@ -139,14 +140,25 @@ impl FromStr for RawLog {
 }
 
 pub fn part_one(file_contents: &String) -> () {
+    let mut guard_to_minute: HashMap<i16, i16> = HashMap::new();
     let mut logs = file_contents
         .clone()
         .as_mut_str()
         .split("\n")
-        .map(|log| RawLog::from_str(log).unwrap())
-        .collect::<Vec<RawLog>>();
+        .map(|log| {
+            let l = RawLog::from_str(log).unwrap();
+            match l.event {
+                LogActivity::StartDuty(n) => {
+                    guard_to_minute.entry(n).or_insert(-1);
+                }
+                _ => (),
+            };
+            return l;
+        }).collect::<Vec<RawLog>>();
 
     logs.sort_unstable();
 
-    logs.into_iter().for_each(|log| println!("{}", log));
+    guard_to_minute
+        .keys()
+        .for_each(|k| println!("guard found with id {}", k));
 }
