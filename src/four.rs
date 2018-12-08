@@ -158,6 +158,33 @@ pub fn part_one(file_contents: &String) -> () {
 
     logs.sort_unstable();
 
+    let mut current_guard_id: isize = -1;
+    let mut sleep_start_minute: isize = -1;
+    let mut is_asleep: bool = false;
+    let guard_sleeping_minutes: Vec<(isize, isize)> = logs
+        .into_iter()
+        .flat_map(|log| match log.event {
+            LogActivity::StartDuty(n) => {
+                current_guard_id = n;
+                return vec![];
+            }
+            LogActivity::FallAsleep => {
+                is_asleep = true;
+                sleep_start_minute = log.minute;
+                return vec![];
+            }
+            LogActivity::WakeUp => {
+                if !is_asleep || sleep_start_minute == -1 || current_guard_id == -1 {
+                    panic!("logs are not in a valid order")
+                }
+                let mut ret_v = vec![];
+                for m in sleep_start_minute..log.minute {
+                    ret_v.push((current_guard_id, m));
+                }
+                return ret_v;
+            }
+        }).collect();
+
     guard_to_minute
         .keys()
         .for_each(|k| println!("guard found with id {}", k));
