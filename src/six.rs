@@ -52,3 +52,14 @@ impl FromStr for Point {
         return Ok(p);
     }
 }
+
+pub fn part_one(file_contents: &String) -> () {
+    let input_points: Vec<Point> = file_contents
+        .clone()
+        .as_mut_str()
+        .split("\n")
+        .map(|p_str| Point::from_str(p_str).unwrap())
+        .collect();
+
+    println!("found {} points", input_points.len());
+}
