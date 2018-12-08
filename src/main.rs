@@ -40,6 +40,7 @@ fn main() {
         },
         4 => match part {
             1 => four::part_one(&file_contents),
+            2 => four::part_two(&file_contents),
             _ => println!("unknown part"),
         },
         _ => println!("unknown day"),
