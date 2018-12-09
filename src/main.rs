@@ -52,6 +52,7 @@ fn main() {
         },
         6 => match part {
             1 => six::part_one(&file_contents),
+            2 => six::part_two(&file_contents),
             _ => println!("unknown part"),
         },
         _ => println!("unknown day"),

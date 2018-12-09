@@ -236,14 +236,26 @@ pub fn part_two(file_contents: &String) -> () {
             return p;
         }).collect();
 
+    let mut safe_region_area: usize = 0;
+
     for x in 0..x_max {
         for y in 0..y_max {
             let current_point = RawPoint {
                 x_offset: x,
                 y_offset: y,
             };
+
+            let total_distance: usize = input_points
+                .clone()
+                .into_iter()
+                .map(|p| p.taxicab_to(&current_point))
+                .sum();
+
+            if total_distance < 10000 {
+                safe_region_area += 1;
+            }
         }
     }
 
-    // println!("point ID {} has largest area {} ", max_id, max_area);
+    println!("safe area has size {} ", safe_region_area);
 }
