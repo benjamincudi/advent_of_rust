@@ -26,6 +26,7 @@ impl error::Error for NodeParseError {
     }
 }
 
+#[derive(Clone)]
 struct Node {
     header: Header,
     children: Vec<Node>,
@@ -78,6 +79,21 @@ impl Node {
         }
         return total;
     }
+
+    fn sum_tree(self) -> usize {
+        let mut total: usize = 0;
+        if self.header.num_children > 0 {
+            for m in self.metadata.into_iter() {
+                total += match self.children.as_slice().get(m - 1) {
+                    None => 0,
+                    Some(n) => n.clone().sum_tree(),
+                }
+            }
+        } else {
+            total += self.metadata.into_iter().sum::<usize>();
+        };
+        return total;
+    }
 }
 
 impl FromStr for Node {
@@ -101,3 +117,8 @@ pub fn part_one(file_contents: &String) -> () {
     println!("metadata sum is {}", root.sum_metadata());
 }
 
+pub fn part_two(file_contents: &String) -> () {
+    let root: Node = file_contents.clone().as_str().parse::<Node>().unwrap();
+
+    println!("tree sum is {}", root.sum_tree());
+}
