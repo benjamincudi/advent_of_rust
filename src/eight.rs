@@ -70,6 +70,14 @@ impl Node {
 
         return Ok(node);
     }
+
+    fn sum_metadata(self) -> usize {
+        let mut total: usize = self.metadata.into_iter().fold(0, |acc, m| acc + m);
+        for c in self.children {
+            total += c.sum_metadata();
+        }
+        return total;
+    }
 }
 
 impl FromStr for Node {
