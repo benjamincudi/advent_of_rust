@@ -1,5 +1,6 @@
 use std::error;
 use std::fmt;
+use std::str::FromStr;
 
 #[derive(Clone)]
 struct Header {
@@ -68,6 +69,21 @@ impl Node {
         }
 
         return Ok(node);
+    }
+}
+
+impl FromStr for Node {
+    type Err = NodeParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let mut data_chunks: Vec<usize> = s
+            .to_string()
+            .as_mut_str()
+            .split_whitespace()
+            .map(|s| s.parse().unwrap())
+            .collect();
+
+        return Node::from_vec_usize(&mut data_chunks);
     }
 }
 
