@@ -196,5 +196,11 @@ pub fn part_one(file_contents: &String) -> () {
         }
     }
 
-    println!("found {} points", input_points.len());
+    let (max_id, max_area) = point_id_to_area
+        .into_iter()
+        .filter(|(id, _)| !border_points.contains_key(id))
+        .max_by(|(_, a), (_, b)| a.cmp(b))
+        .unwrap();
+
+    println!("point ID {} has largest area {} ", max_id, max_area);
 }
