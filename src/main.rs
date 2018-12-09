@@ -1,6 +1,7 @@
 mod five;
 mod four;
 mod one;
+mod seven;
 mod six;
 mod three;
 mod two;
@@ -53,6 +54,10 @@ fn main() {
         6 => match part {
             1 => six::part_one(&file_contents),
             2 => six::part_two(&file_contents),
+            _ => println!("unknown part"),
+        },
+        7 => match part {
+            1 => seven::part_one(&file_contents),
             _ => println!("unknown part"),
         },
         _ => println!("unknown day"),
