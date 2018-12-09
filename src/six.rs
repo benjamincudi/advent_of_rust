@@ -93,10 +93,8 @@ pub fn part_one(file_contents: &String) -> () {
             return p;
         }).collect();
 
-    let mut border_points: HashMap<usize, bool> = HashMap::new();
-
-    for x in 0..x_max {
-        for y in 0..y_max {
+    for x in 1..x_max {
+        for y in 1..y_max {
             let current_point = RawPoint {
                 x_offset: x,
                 y_offset: y,
@@ -125,10 +123,76 @@ pub fn part_one(file_contents: &String) -> () {
                 let a = point_id_to_area.entry(min_id).or_insert(0);
                 *a += 1;
             }
+        }
+    }
 
-            if x == 0 || x == x_max || y == 0 || y == y_max {
-                border_points.insert(min_id, true);
+    // Anything that grows now can be considered to have infinite area
+    let mut border_points: HashMap<usize, bool> = HashMap::new();
+    for x in 0..x_max + 2 {
+        for y in vec![0, y_max + 2] {
+            let current_point = RawPoint {
+                x_offset: x,
+                y_offset: y,
+            };
+
+            let mut min_distance: usize = usize::MAX;
+            let mut count_of_min: usize = 0;
+            let mut min_id: usize = 0;
+            input_points.clone().into_iter().for_each(|p| {
+                let distance = p.taxicab_to(&current_point);
+                match distance.cmp(&min_distance) {
+                    Ordering::Less => {
+                        min_distance = distance;
+                        count_of_min = 1;
+                        min_id = p.id;
+                    }
+                    Ordering::Equal => {
+                        count_of_min += 1;
+                        min_id = 0;
+                    }
+                    _ => (),
+                }
+            });
+
+            if count_of_min == 1 {
+                let a = point_id_to_area.entry(min_id).or_insert(0);
+                *a += 1;
             }
+            border_points.insert(min_id, true);
+        }
+    }
+
+    for y in 0..y_max + 2 {
+        for x in vec![0, x_max + 2] {
+            let current_point = RawPoint {
+                x_offset: x,
+                y_offset: y,
+            };
+
+            let mut min_distance: usize = usize::MAX;
+            let mut count_of_min: usize = 0;
+            let mut min_id: usize = 0;
+            input_points.clone().into_iter().for_each(|p| {
+                let distance = p.taxicab_to(&current_point);
+                match distance.cmp(&min_distance) {
+                    Ordering::Less => {
+                        min_distance = distance;
+                        count_of_min = 1;
+                        min_id = p.id;
+                    }
+                    Ordering::Equal => {
+                        count_of_min += 1;
+                        min_id = 0;
+                    }
+                    _ => (),
+                }
+            });
+
+            if count_of_min == 1 {
+                let a = point_id_to_area.entry(min_id).or_insert(0);
+                *a += 1;
+            }
+            border_points.insert(min_id, true);
         }
     }
 
