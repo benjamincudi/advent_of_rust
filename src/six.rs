@@ -204,3 +204,46 @@ pub fn part_one(file_contents: &String) -> () {
 
     println!("point ID {} has largest area {} ", max_id, max_area);
 }
+
+pub fn part_two(file_contents: &String) -> () {
+    let mut x_max: usize = 0;
+    let mut y_max: usize = 0;
+    let mut count: usize = 0;
+
+    let mut point_id_to_area: HashMap<usize, usize> = HashMap::new();
+
+    let input_points: Vec<Point> = file_contents
+        .clone()
+        .as_mut_str()
+        .split("\n")
+        .map(|p_str| {
+            let rp = RawPoint::from_str(p_str).unwrap();
+            count += 1;
+            let p = Point {
+                x_offset: rp.x_offset,
+                y_offset: rp.y_offset,
+                id: count,
+            };
+            x_max = match x_max.cmp(&p.x_offset) {
+                Ordering::Less => p.x_offset,
+                _ => x_max,
+            };
+            y_max = match y_max.cmp(&p.y_offset) {
+                Ordering::Less => p.y_offset,
+                _ => y_max,
+            };
+            point_id_to_area.insert(count, 0);
+            return p;
+        }).collect();
+
+    for x in 0..x_max {
+        for y in 0..y_max {
+            let current_point = RawPoint {
+                x_offset: x,
+                y_offset: y,
+            };
+        }
+    }
+
+    // println!("point ID {} has largest area {} ", max_id, max_area);
+}
