@@ -21,5 +21,27 @@ pub fn part_one(file_contents: &String) -> () {
             v.push(blocker);
         });
 
-    println!("{} directions found", num_directions);
+    let mut order_for_steps: Vec<String> = vec![];
+
+    while step_to_blockers.len() > 0 {
+        let mut ready_steps: Vec<String> = step_to_blockers
+            .clone()
+            .into_iter()
+            .filter(|(_, blockers)| blockers.is_empty())
+            .map(|(c, _)| c)
+            .collect();
+
+        ready_steps.sort_unstable();
+        // Only perform the first available step, in alpha order
+        let c = ready_steps.first().unwrap();
+
+        order_for_steps.push(c.clone());
+        step_to_blockers.remove_entry(c);
+
+        for blockers in step_to_blockers.values_mut() {
+            blockers.retain(|v| v != c);
+        }
+    }
+
+    println!("order for directions: {}", order_for_steps.join(""));
 }
