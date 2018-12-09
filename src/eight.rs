@@ -95,3 +95,9 @@ impl FromStr for Node {
     }
 }
 
+pub fn part_one(file_contents: &String) -> () {
+    let root: Node = file_contents.clone().as_str().parse::<Node>().unwrap();
+
+    println!("metadata sum is {}", root.sum_metadata());
+}
+
