@@ -16,6 +16,7 @@ pub fn part_one(file_contents: &String) -> () {
             let blocker = steps[1][0..1].to_string();
             let blockee = steps[2][0..1].to_string();
 
+            step_to_blockers.entry(blocker.clone()).or_insert(vec![]);
             let v = step_to_blockers.entry(blockee).or_insert(vec![]);
             v.push(blocker);
         });
