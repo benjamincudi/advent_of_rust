@@ -153,3 +153,44 @@ pub fn part_one(file_contents: &String) -> () {
         println!("{}", row_str);
     }
 }
+
+pub fn part_two(file_contents: &String) -> () {
+    let points = file_contents
+        .clone()
+        .as_mut_str()
+        .split("\n")
+        .map(|s| s.parse().unwrap())
+        .collect::<Vec<RawPoint>>();
+
+    let mut min_spread: isize = isize::MAX;
+    let mut min_spread_time: isize = 0;
+
+    for t in 1.. {
+        let mut y_max_loop: isize = isize::MIN;
+        let mut y_min_loop: isize = isize::MAX;
+        for p in points.clone().into_iter() {
+            let current_y: isize = p.y_init + (p.y_vel * t);
+            match current_y.cmp(&y_max_loop) {
+                Ordering::Greater => y_max_loop = current_y,
+                _ => (),
+            }
+            match current_y.cmp(&y_min_loop) {
+                Ordering::Less => y_min_loop = current_y,
+                _ => (),
+            }
+        }
+        let spread = y_max_loop - y_min_loop;
+        match min_spread.cmp(&spread) {
+            Ordering::Greater => min_spread = spread,
+            // As soon as we're diverging, we know the previous second was the closes things get
+            _ => break,
+        }
+
+        min_spread_time = t;
+    }
+
+    println!(
+        "solution occurred at time {}, with vertical spread of {}",
+        min_spread_time, min_spread
+    );
+}
