@@ -5,6 +5,7 @@ mod nine;
 mod one;
 mod seven;
 mod six;
+mod ten;
 mod three;
 mod two;
 use std::env;
@@ -71,6 +72,11 @@ fn main() {
         9 => match part {
             1 => nine::part_one(&file_contents),
             2 => nine::part_two(&file_contents),
+            _ => println!("unknown part"),
+        },
+        10 => match part {
+            1 => ten::part_one(&file_contents),
+            2 => ten::part_two(&file_contents),
             _ => println!("unknown part"),
         },
         _ => println!("unknown day"),
